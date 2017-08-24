@@ -1,0 +1,19 @@
+Package: ktest
+Version: 0.0.1
+Type: Package
+Date: 2017-08-05
+Title: Estimated kernel densities comparisons
+Authors@R: c(person("Victor", "Coscrato", role = c("aut", "cre"), email = "vcoscrato@gmail.com"),
+             person("Mauricio", "Silveira", role = "aut", email = "mauriciomon600@gmail.com"),
+             person("Rafael", "Pulgrossi", role = "aut", email = "rafael@rafael.raf"))
+Description: The ktest package performs kernel densities comparisons between different populations.
+License: Open
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Imports: FNN,
+	ggplot2,
+	tidyr,
+	dplyr
+URL: artigo.com
+BugReports: vcoscrato@gmail.com

@@ -3,7 +3,7 @@
 import(foreach)
 import(parallel)
 import(doParallel)
-import(MESS)
+importFrom(MESS, auc)
 export(convertDataStacked)
 export(kCommonArea)
 export(kTest)

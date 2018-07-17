@@ -17,21 +17,25 @@ kCommonArea <- function(data, bw = bw.nrd0(data[,1]), npoints = 512, plot = FALS
   maxi <- max(data[,1]) + 3*bw
   l <- levels(data[,2])
   d <- density(data[data[,2] == l[1],1], n = npoints, na.rm = TRUE, from = mini, to = maxi)
-  if(return_densities | plot)
-    densities = list(d)
+  if(return_densities | plot) {
+    densities = list()
+    densities[[1]] = d
+  }
   x <- d[[1]]
   y <- d[[2]]
   for(i in 2:length(l)) {
-    d <- density(data[data[,2] == l[i],1], n = npoints, na.rm = TRUE, from = mini, to = maxi)$y
+    d <- density(data[data[,2] == l[i],1], n = npoints, na.rm = TRUE, from = mini, to = maxi)
     if(return_densities | plot)
       densities[[i]] = d
+    d = d$y
     for(j in 1:npoints) {
       y[j] <- min(y[j], d[j])
     }
   }
   if(plot) {
-   for(i in 1:length(d))
-     plot(densities[[i]], col = i)
+    plot(densities[[1]], col = 1)
+    for(i in 2:length(densities))
+      lines(densities[[i]], col = i)
   }
   if(return_densities)
     return(list(CommonArea = auc(x, y, type = 'spline'), densities = densities))

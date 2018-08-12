@@ -1,16 +1,16 @@
 Package: ktest
-Version: 0.0.1
+Version: 1.0.0
 Type: Package
 Date: 2017-08-05
 Title: Estimated kernel densities comparisons
 Authors@R: c(person("Victor", "Coscrato", role = c("aut", "cre"), email = "vcoscrato@gmail.com"),
              person("Mauricio", "Silveira", role = "aut", email = "mauriciomon600@gmail.com"),
-             person("Rafael", "Pulgrossi", role = "aut", email = "rafael@rafael.raf"))
-Description: The ktest package performs kernel densities comparisons between different populations.
+             person("Rafael", "Pulgrossi", role = "aut", email = "rafacatoia@hotmail.com"))
+Description: The ktest package performs multiple hypothesis testing procedures based on estimated kernel densities and permutation test.
 License: Open
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 RoxygenNote: 6.1.0
-Depends: foreach, parallel, MESS, doParallel
+Depends: foreach, parallel, MESS, doParallel, Matrix
 URL: github.com/vcoscrato/ktest
-BugReports: vcoscrato@gmail.com
+BugReports: github.com/vcoscrato/ktest

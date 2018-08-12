@@ -31,6 +31,6 @@ A list containing:
 Performs a hypothesis test for equality of distributions based on the estimated kernel densities and the permutation test.
 }
 \examples{
-data <- list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
+data = list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
 kTest(data)
 }

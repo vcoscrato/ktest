@@ -16,5 +16,5 @@ Imports:
 	parallel,
 	MESS,
 	doParallel
-URL: github.com/vcoscrato/agnostic
+URL: github.com/vcoscrato/ktest
 BugReports: vcoscrato@gmail.com

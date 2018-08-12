@@ -15,10 +15,6 @@ Imports:
 	foreach,
 	parallel,
 	MESS,
-	doParallel,
-	dplyr,
-	FNN,
-	ggplot2,
-	tidyr
-URL: artigo.com
+	doParallel
+URL: github.com/vcoscrato/agnostic
 BugReports: vcoscrato@gmail.com

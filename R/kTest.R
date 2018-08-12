@@ -2,10 +2,11 @@
 #'
 #' Performs a hypothesis test for equality of distributions based on the estimated kernel densities and the permutation test.
 #'
-#' @param data A stacked data frame (see ?convertDataStacked).
+#' @param data Either a list of numeric vectors or a data frame where each column is a vector of observations.
 #' @param B Number of permutations.
 #' @param bw The bandwidth used to estimate the kernel densities.
 #' @param npoints The number of points used to estimate the kernel densities.
+#' @param pairsPlot Boolean indicating weather to plot density pairs or not (usefull to detect witch densities differ).
 #' @param threads Number of cores to be used (see ??DoParallel).
 #'
 #' @return A list containing:
@@ -16,11 +17,79 @@
 #'
 #' @export
 #'
-#' @examples data <- convertDataStacked(list(x = rnorm(30), y = rexp(50)))
+#' @examples data <- list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
 #' kTest(data)
 
-kTest <- function(data, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, threads = detectCores() - 1) {
-  k <- kCommonArea(data, bw, npoints)
+convertDataStacked = function(data) {
+  if(is.list(data)) {
+    if(is.data.frame(data)) {
+      if(is.factor(data[,2])) {
+        return(data[is.na(data)[,1] == FALSE,])
+      } else {
+        return(stack(data)[is.na(stack(data)[,1]) == FALSE,])
+      }
+    } else {
+      if(is.null(names(data))) {
+        data = setNames(data, as.factor(1:length(data)))
+      }
+      return(stack(data))
+    }
+  } else {
+    stop("Object type is not valid, insert one of, list, data frame or stacked data frame.")
+  }
+}
+
+densitiesEval = function(data, bw = bw.nrd0(data[,1]), npoints = 512) {
+  mini = min(data[,1]) - 3*bw
+  maxi = max(data[,1]) + 3*bw
+  l = levels(data[,2])
+  densities = list()
+  for(i in 1:length(l))
+    densities[[i]] = density(data[data[,2] == l[i],1], n = npoints, na.rm = TRUE, from = mini, to = maxi)
+  return(list(densities = densities, labels = l))
+}
+
+commonArea = function(densities) {
+  x = densities[[1]]$x
+  y = densities[[1]]$y
+  
+  for(i in 2:length(densities)) {
+    for(j in 1:length(x)) {
+      y[j] = min(y[j], densities[[i]]$y[j])
+    }
+  }
+  
+  return(auc(x, y, type = 'spline'))
+}
+
+densityPairs = function(densities, labels) {
+  par(mfrow = c(length(densities) - 1, length(densities) - 1))
+  for(i in 1:length(densities)) {
+    for(j in i:length(densities)) {
+      if(i == j && i != 1 && i != length(densities)) {
+        plot.new()
+      } 
+      if(i != j) { 
+        plot(densities[[i]], col = 1, main = "", xlab = paste('Common area =', round(commonArea(densities[c(i,j)]), 4)), ylab = "")
+        lines(densities[[j]], col = 2)
+        legend('topright', legend = c(paste('Group', labels[i]), paste('Group', labels[j])), col = 1:2, lwd = 1, bty = 'n')
+      }
+    }
+  }
+  par(mfrow=c(1,1))
+}
+
+kTest <- function(data, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, pairsPlot = TRUE, threads = detectCores() - 1) {
+  
+  data = convertDataStacked(data)
+  
+  densities = densitiesEval(data, bw, npoints)
+  
+  k <- commonArea(densities$densities)
+  
+  if(pairsPlot) {
+    densityPairs(densities$densities, densities$labels)
+  }
 
   if(threads > 1) {
     if(threads > detectCores()) {
@@ -30,15 +99,15 @@ kTest <- function(data, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, threads
     cl <- makeCluster(threads)
     registerDoParallel(cl)
     on.exit(stopCluster(cl))
-    Ti <- foreach(i = 1:B, .combine = c, .export = "kCommonArea", .packages = "MESS") %dopar% {
+    Ti <- foreach(i = 1:B, .combine = c, .export = c("commonArea", "densitiesEval"), .packages = "MESS") %dopar% {
       data[,1] <- sample(data[,1])
-      return(kCommonArea(data))
+      return(commonArea(densitiesEval(data)$densities))
     }
   } else {
     Ti <- vector("numeric", B)
     for(i in 1:B) {
       data[,1] <- sample(data[,1])
-      Ti[i] <- kCommonArea(data)
+      Ti[i] <- commonArea(data)
     }
   }
   p <- (1/B)*sum(Ti < k)

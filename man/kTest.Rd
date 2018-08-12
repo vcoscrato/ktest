@@ -5,16 +5,18 @@
 \title{kTest}
 \usage{
 kTest(data, B = 5000, bw = bw.nrd0(data[, 1]), npoints = 512,
-  threads = parallel::detectCores() - 1)
+  pairsPlot = TRUE, threads = detectCores() - 1)
 }
 \arguments{
-\item{data}{A stacked data frame (see ?convertDataStacked).}
+\item{data}{Either a list of numeric vectors or a data frame where each column is a vector of observations.}
 
 \item{B}{Number of permutations.}
 
 \item{bw}{The bandwidth used to estimate the kernel densities.}
 
 \item{npoints}{The number of points used to estimate the kernel densities.}
+
+\item{pairsPlot}{Boolean indicating weather to plot density pairs or not (usefull to detect witch densities differ).}
 
 \item{threads}{Number of cores to be used (see ??DoParallel).}
 }
@@ -29,6 +31,6 @@ A list containing:
 Performs a hypothesis test for equality of distributions based on the estimated kernel densities and the permutation test.
 }
 \examples{
-data <- convertDataStacked(list(x = rnorm(30), y = rexp(50)))
+data <- list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
 kTest(data)
 }

@@ -207,7 +207,7 @@ kTest = function(data, classes = NULL, perm = TRUE, B = 5000, bw = bw.nrd0(data[
 #' @export
 #'
 #' @examples x = rnorm(100)
-#' ksimmetryTest(x)
+#' kSimmetryTest(x)
 
 kSimmetryTest = function(x, around = 'median', ...) {
 
@@ -271,6 +271,7 @@ commonAreaReal = function(d, dfunc) {
 #' @param bw The bandwidth used to estimate the kernel densities.
 #' @param npoints The number of points used to estimate the kernel densities.
 #' @param threads Number of cores to be used (see ??DoParallel).
+#' @param param_names A vector of variable names (as character). This parameter can be ignored when threads = 1. When using more then 1 threads, it is needed to export the global parameters name on the rfunc and dfunc functions (see examples).
 #'
 #' @return A list containing:
 #'
@@ -282,20 +283,24 @@ commonAreaReal = function(d, dfunc) {
 #'
 #' @examples data = rnorm(100)
 #'
-#'  rfunc = function(n) {
-#'    return(rnorm(n, mean(data), sd(data)))
-#'  }
+#' param1 = mean(data)
 #'
-#'  dfunc = function(x) {
-#'    return(dnorm(x, mean(data), sd(data)))
-#'  }
+#' param2 = sd(data)
 #'
-#'  kGOFTest(data, rfunc, dfunc, threads = 1)
+#' var_names = c(param1, param2)
+#'
+#' rfunc = function(n) {
+#'   return(rnorm(n, param1, param2))
+#' }
+#'
+#' dfunc = function(x) {
+#'   return(dnorm(x, param1, param2))
+#' }
+#'
+#' kGOFTest(data, rfunc, dfunc, threads = 2, param_names = c('param1', 'param2'))
 
 
-kGOFTest = function(data, rfunc, dfunc, perm = TRUE, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, threads = detectCores() - 1) {
-
-  browser()
+kGOFTest = function(data, rfunc, dfunc, perm = TRUE, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, threads = detectCores() - 1, param_names = NULL) {
 
   if(!is.numeric(data)) {
 
@@ -343,7 +348,7 @@ kGOFTest = function(data, rfunc, dfunc, perm = TRUE, B = 5000, bw = bw.nrd0(data
 
     on.exit(stopCluster(cl))
 
-    Ti = foreach(i = 1:B, .combine = c, .export = c("commonAreaReal", "densitiesEval"), .packages = "MESS") %dopar% {
+    Ti = foreach(i = 1:B, .combine = c, .export = c("commonAreaReal", "densitiesEval", param_names), .packages = "MESS") %dopar% {
 
       data[,1] = rfunc(nrow(data))
 

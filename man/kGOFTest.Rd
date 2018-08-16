@@ -6,7 +6,7 @@
 \usage{
 kGOFTest(data, rfunc, dfunc, perm = TRUE, B = 5000,
   bw = bw.nrd0(data[, 1]), npoints = 512, threads = detectCores() -
-  1)
+  1, param_names = NULL)
 }
 \arguments{
 \item{data}{Either a list of numeric vectors, a numeric vector (with classes parameter defined), or a stacked data frame (first column with numeric values and second column with classes).}
@@ -25,6 +25,8 @@ kGOFTest(data, rfunc, dfunc, perm = TRUE, B = 5000,
 
 \item{threads}{Number of cores to be used (see ??DoParallel).}
 
+\item{param_names}{A vector of variable names (as character). This parameter can be ignored when threads = 1. When using more then 1 threads, it is needed to export the global parameters name on the rfunc and dfunc functions (see examples).}
+
 \item{classes}{Classes relative to data parameter, should be used only when data is a numeric vector.}
 }
 \value{
@@ -40,13 +42,19 @@ Performs a hypothesis test for goodness-of-fit based on the estimated kernel den
 \examples{
 data = rnorm(100)
 
- rfunc = function(n) {
-   return(rnorm(n, mean(data), sd(data)))
- }
+param1 = mean(data)
 
- dfunc = function(x) {
-   return(dnorm(x, mean(data), sd(data)))
- }
+param2 = sd(data)
 
- kGOFTest(data, rfunc, dfunc, threads = 1)
+var_names = c(param1, param2)
+
+rfunc = function(n) {
+  return(rnorm(n, param1, param2))
+}
+
+dfunc = function(x) {
+  return(dnorm(x, param1, param2))
+}
+
+kGOFTest(data, rfunc, dfunc, threads = 2, param_names = c('param1', 'param2'))
 }

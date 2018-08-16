@@ -25,5 +25,5 @@ Performs a pdf simmetry test for given data based on the estimated kernel densit
 }
 \examples{
 x = rnorm(100)
-ksimmetryTest(x)
+kSimmetryTest(x)
 }

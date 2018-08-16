@@ -47,3 +47,9 @@ dfunc = function(x) {
 }
 
 kGOFTest(data, rfunc, dfunc, threads = 2)
+
+$`commonArea`
+[1] 0.9282987
+
+$p.value
+[1] 0.4938

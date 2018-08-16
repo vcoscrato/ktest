@@ -36,20 +36,26 @@ Performs a hypothesis test for goodness-of-fit based on the estimated kernel den
 
 ### Example
 
-data = rnorm(100)
+> data = rnorm(100)
 
-rfunc = function(n) {
-  return(rnorm(n, mean(data), sd(data)))
-}
+> param1 = mean(data)
 
-dfunc = function(x) {
-  return(dnorm(x, mean(data), sd(data)))
-}
+> param2 = sd(data)
 
-kGOFTest(data, rfunc, dfunc, threads = 2)
+> var_names = c(param1, param2)
+
+> rfunc = function(n) {
++   return(rnorm(n, param1, param2))
++ }
+
+> dfunc = function(x) {
++   return(dnorm(x, param1, param2))
++ }
+
+> kGOFTest(data, rfunc, dfunc, threads = 2, param_names = c('param1', 'param2'))
 
 $`commonArea`
-[1] 0.9282987
+[1] 0.921853
 
 $p.value
-[1] 0.4938
+[1] 0.3854

@@ -66,15 +66,21 @@ kGOFTest(data, rfunc, dfunc)
 
 data = rnorm(100)
 
+param1 = 0
+
+param2 = 1
+
+var_names = c(param1, param2)
+
 rfunc = function(n) {
-  return(rnorm(n, 0, 1))
+  return(rnorm(n, param1, param2))
 }
 
 dfunc = function(x) {
-  return(dnorm(x, 0, 1))
+  return(dnorm(x, param1, param2))
 }
 
-kGOFTest(data, rfunc, dfunc)
+kGOFTest(data, rfunc, dfunc, param_names = c('param1', 'param2'))
 
 #$`commonArea`
 #[1] 0.9537704

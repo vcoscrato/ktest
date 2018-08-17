@@ -1,7 +1,7 @@
 # ktest
 R interface for estimated kernel densities comparisons
 
-## Instalattion
+## Installation
 
 ```R 
 if (!require(devtools)) 

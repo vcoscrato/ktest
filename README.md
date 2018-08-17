@@ -1,6 +1,14 @@
 # ktest
 R interface for estimated kernel densities comparisons
 
+## Instalattion
+
+```R 
+if (!require(devtools)) 
+   install.packages('devtools') 
+devtools::install_github('vcoscrato/ktest') 
+```
+
 ## The kTest function
 Performs a hypothesis test for equality of distributions based on the estimated kernel densities and the permutation test.
 

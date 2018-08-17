@@ -23,7 +23,7 @@ kGOFTest(data, rfunc, dfunc, perm = TRUE, B = 5000,
 
 \item{npoints}{The number of points used to estimate the kernel densities.}
 
-\item{threads}{Number of cores to be used (see ??DoParallel).}
+\item{threads}{Number of cores to be used for parallel computing.}
 
 \item{param_names}{A vector of variable names (as character). This parameter can be ignored when threads = 1. When using more then 1 threads, it is needed to export the global parameters name on the rfunc and dfunc functions (see examples).}
 

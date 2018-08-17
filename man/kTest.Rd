@@ -23,7 +23,7 @@ kTest(data, classes = NULL, perm = TRUE, B = 5000,
 
 \item{pairsPlot}{Boolean indicating weather to plot density pairs or not (usefull to detect witch densities differ).}
 
-\item{threads}{Number of cores to be used (see ??DoParallel).}
+\item{threads}{Number of cores to be used for parallel computing.}
 }
 \value{
 A list containing:

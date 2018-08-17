@@ -113,7 +113,7 @@ densityPairs = function(densities, labels) {
 #' @param bw The bandwidth used to estimate the kernel densities.
 #' @param npoints The number of points used to estimate the kernel densities.
 #' @param pairsPlot Boolean indicating weather to plot density pairs or not (usefull to detect witch densities differ).
-#' @param threads Number of cores to be used (see ??DoParallel).
+#' @param threads Number of cores to be used for parallel computing.
 #'
 #' @return A list containing:
 #'
@@ -190,13 +190,13 @@ kTest = function(data, classes = NULL, perm = TRUE, B = 5000, bw = bw.nrd0(data[
 }
 
 
-#' kSimmetryTest
+#' kSymmetryTest
 #'
-#' Performs a pdf simmetry test for given data based on the estimated kernel densities and the permutation test.
+#' Performs a pdf symmetry test for given data based on the estimated kernel densities and the permutation test.
 #'
 #' @param x A numeric vector of data.
-#' @param around The desired value to check if the density is simmetryc around. Must be one of 'mean', 'median', or a real number.
-#' @param ... Futher parameters to be passed to kTest.
+#' @param around The desired value to check if the density is symmetric around. Must be one of 'mean', 'median', or a real number.
+#' @param ... Futher parameters to be passed to \link[ktest]{kTest}.
 #'
 #' @return A list containing:
 #'
@@ -207,9 +207,9 @@ kTest = function(data, classes = NULL, perm = TRUE, B = 5000, bw = bw.nrd0(data[
 #' @export
 #'
 #' @examples x = rnorm(100)
-#' kSimmetryTest(x)
+#' kSymmetryTest(x)
 
-kSimmetryTest = function(x, around = 'median', ...) {
+kSymmetryTest = function(x, around = 'median', ...) {
 
   if(!is.numeric(x)) {
 
@@ -270,7 +270,7 @@ commonAreaReal = function(d, dfunc) {
 #' @param B Number of permutations.
 #' @param bw The bandwidth used to estimate the kernel densities.
 #' @param npoints The number of points used to estimate the kernel densities.
-#' @param threads Number of cores to be used (see ??DoParallel).
+#' @param threads Number of cores to be used for parallel computing.
 #' @param param_names A vector of variable names (as character). This parameter can be ignored when threads = 1. When using more then 1 threads, it is needed to export the global parameters name on the rfunc and dfunc functions (see examples).
 #'
 #' @return A list containing:

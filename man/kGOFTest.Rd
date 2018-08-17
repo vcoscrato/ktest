@@ -40,11 +40,28 @@ A list containing:
 Performs a hypothesis test for goodness-of-fit based on the estimated kernel densities.
 }
 \examples{
+
+#When using no extra parameters on rfunc and dfunc:
+
 data = rnorm(100)
 
-param1 = mean(data)
+rfunc = function(n) {
+  return(rnorm(n, 0, 1))
+}
 
-param2 = sd(data)
+dfunc = function(x) {
+  return(dnorm(x, 0, 1))
+}
+
+kGOFTest(data, rfunc, dfunc)
+
+#When using parameters on rfunc and dfunc:
+
+data = rnorm(100)
+
+param1 = 0
+
+param2 = 1
 
 var_names = c(param1, param2)
 
@@ -56,5 +73,5 @@ dfunc = function(x) {
   return(dnorm(x, param1, param2))
 }
 
-kGOFTest(data, rfunc, dfunc, threads = 2, param_names = c('param1', 'param2'))
+kGOFTest(data, rfunc, dfunc, param_names = c('param1', 'param2'))
 }

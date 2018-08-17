@@ -281,11 +281,29 @@ commonAreaReal = function(d, dfunc) {
 #'
 #' @export
 #'
-#' @examples data = rnorm(100)
+#' @examples
 #'
-#' param1 = mean(data)
+#' #When using no extra parameters on rfunc and dfunc:
 #'
-#' param2 = sd(data)
+#' data = rnorm(100)
+#'
+#' rfunc = function(n) {
+#'   return(rnorm(n, 0, 1))
+#' }
+#'
+#' dfunc = function(x) {
+#'   return(dnorm(x, 0, 1))
+#' }
+#'
+#' kGOFTest(data, rfunc, dfunc)
+#'
+#' #When using parameters on rfunc and dfunc:
+#'
+#' data = rnorm(100)
+#'
+#' param1 = 0
+#'
+#' param2 = 1
 #'
 #' var_names = c(param1, param2)
 #'
@@ -297,7 +315,7 @@ commonAreaReal = function(d, dfunc) {
 #'   return(dnorm(x, param1, param2))
 #' }
 #'
-#' kGOFTest(data, rfunc, dfunc, threads = 2, param_names = c('param1', 'param2'))
+#' kGOFTest(data, rfunc, dfunc, param_names = c('param1', 'param2'))
 
 
 kGOFTest = function(data, rfunc, dfunc, perm = TRUE, B = 5000, bw = bw.nrd0(data[,1]), npoints = 512, threads = detectCores() - 1, param_names = NULL) {
@@ -371,6 +389,12 @@ kGOFTest = function(data, rfunc, dfunc, perm = TRUE, B = 5000, bw = bw.nrd0(data
   }
 
   p = (1/B)*sum(Ti < k)
+
+  plot(d, main = 'Comparison of densities', xlab = paste('Common area =', round(k, 4)), ylab = "")
+
+  plot(dfunc, d$x[1], d$x[npoints], add = TRUE, col = 2)
+
+  legend('topright', c('Data', 'Null hypothesis'), col = 1:2, bty = 'n', lwd = 1)
 
   return(list(commonArea = k, p.value = p))
 }

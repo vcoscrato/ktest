@@ -51,33 +51,7 @@ kTest = function(data, classes = NULL, perm = TRUE, B = 5000, pairwise = FALSE, 
 
     if(pairwise) {
 
-      pairwisep = matrix(0, nrow = length(densities$labels), ncol = length(densities$labels))
-
-      rownames(pairwisep) = densities$labels
-
-      colnames(pairwisep) = densities$labels
-
-      for(i in 1:length(densities$labels)) {
-
-        for(j in 1:length(densities$labels)) {
-
-          if(i >= j) {
-
-            pairwisep[i,j] = NA
-
-          } else {
-
-            data2 = data[data[,2] %in% densities$labels[c(i,j)],]
-
-            data2[,2] = factor(data2[,2])
-
-            pairwisep[i,j] = permTest(data2, B, threads, bw = bw(data[,1]), npoints, pairwiseca[i,j])
-
-          }
-
-        }
-
-      }
+      pairwisep = pairwisePermTest(data, densities$labels, B, threads, bw, npoints, pairwiseca)
 
     } else {
 
@@ -99,5 +73,37 @@ kTest = function(data, classes = NULL, perm = TRUE, B = 5000, pairwise = FALSE, 
 
   }
 
-  return(list(commonArea = k, p.value = p, pairwiseCommonArea = pairwiseca, pairwisep.value = pairwisep))
+  output = list(commonArea = k, pairwiseCommonArea = pairwiseca)
+
+  if(!is.null(p)) {
+
+    output$p.value = p
+
+  }
+
+  if(!is.null(pairwisep)) {
+
+    output$pairwisep.value = pairwisep
+
+  }
+
+  class(output) = 'kTest'
+
+  return(output)
+}
+
+
+#' @export
+
+print.kTest = function(output) {
+
+  cat(paste('\n', nrow(output$pairwiseCommonArea), 'densities kTest results:\n\n'))
+
+  cat(paste('- Common area between all densities:', round(output$commonArea, 4)))
+
+  cat(paste('\n\n- p-value of the test:', round(output$p.value, 4),'\n\n'))
+
+  pander(output$pairwiseCommonArea, plain.ascii = TRUE, caption = 'Pairwise Common Area')
+
+  pander(output$pairwisep.value, plain.ascii = TRUE, caption = 'Pairwise p-value')
 }

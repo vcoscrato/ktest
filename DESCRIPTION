@@ -1,5 +1,5 @@
 Package: ktest
-Version: 2.4
+Version: 2.5
 Type: Package
 Date: 2017-08-05
 Title: Estimated kernel densities comparisons
@@ -11,6 +11,6 @@ License: Open
 Encoding: UTF-8
 LazyData: false
 RoxygenNote: 6.1.0
-Depends: foreach, parallel, MESS, doParallel, Matrix
+Depends: foreach, parallel, MESS, doParallel, Matrix, pander
 URL: github.com/vcoscrato/ktest
 BugReports: github.com/vcoscrato/ktest

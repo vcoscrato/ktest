@@ -131,7 +131,7 @@ densityPairs = function(densities, labels, pairwiseca, pairwisep) {
 
         }
 
-        plot(densities[[i]], col = 1, main = "", xlab = xlabel, ylab = "")
+        plot(densities[[i]], col = 1, main = "", xlab = xlabel, ylab = "", ylim = c(0, max(c(densities[[i]]$y, densities[[j]]$y))))
 
         lines(densities[[j]], col = 2)
 
@@ -147,7 +147,7 @@ densityPairs = function(densities, labels, pairwiseca, pairwisep) {
 }
 
 
-permTest = function(data, B, threads, bw, npoints, k, pairwise) {
+permTest = function(data, B, threads, bw, npoints, k) {
 
   if(threads > 1) {
 
@@ -190,6 +190,40 @@ permTest = function(data, B, threads, bw, npoints, k, pairwise) {
   p = (1/B)*sum(Ti < k)
 
   return(p)
+}
+
+
+pairwisePermTest = function(data, labels, B, threads, bw, npoints, pairwiseca) {
+
+  pairwisep = matrix(0, nrow = length(labels), ncol = length(labels))
+
+  rownames(pairwisep) = labels
+
+  colnames(pairwisep) = labels
+
+  for(i in 1:length(labels)) {
+
+    for(j in 1:length(labels)) {
+
+      if(i >= j) {
+
+        pairwisep[i,j] = NA
+
+      } else {
+
+        data2 = data[data[,2] %in% labels[c(i,j)],]
+
+        data2[,2] = factor(data2[,2])
+
+        pairwisep[i,j] = permTest(data2, B, threads, bw = bw(data2[,1]), npoints, pairwiseca[i,j])
+
+      }
+
+    }
+
+  }
+
+  return(pairwisep)
 }
 
 

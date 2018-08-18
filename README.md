@@ -19,11 +19,24 @@ data = list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
 
 kTest(data)
 
-#$`commonArea`
-#[1] 0.4895715
-
-#$p.value
-#[1] 2e-04
+# 3 densities kTest results:
+#
+#- Common area between all densities: 0.5309
+#
+#- p-value of the test: 2e-04 
+#
+#
+#-------------------------------
+#          x      y        z    
+#-------- ---- -------- --------
+#   x      1    0.5432   0.557  
+#
+#   y      NA     1      0.7894 
+#
+#   z      NA     NA       1    
+#-------------------------------
+#
+#Table: Pairwise Common Area
 ```
 
 ## The kSimmetryTest function

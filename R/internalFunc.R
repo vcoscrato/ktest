@@ -107,45 +107,6 @@ pairwiseCommonArea = function(densities, labels) {
   return(pairwiseca)
 }
 
-densityPairs = function(densities, labels, pairwiseca, pairwisep) {
-
-  par(mfrow = c(length(densities) - 1, length(densities) - 1))
-
-  for(i in 1:length(densities)) {
-
-    for(j in i:length(densities)) {
-
-      if(i == j & i != 1 & i != length(densities)) {
-
-        plot.new()
-
-      }
-
-      if(i != j) {
-
-        xlabel = paste('Common area =', round(pairwiseca[i,j], 4))
-
-        if(!is.null(pairwisep)) {
-
-          xlabel = paste(xlabel, '/ p-value =', round(pairwisep[i,j], 4))
-
-        }
-
-        plot(densities[[i]], col = 1, main = "", xlab = xlabel, ylab = "", ylim = c(0, max(c(densities[[i]]$y, densities[[j]]$y))))
-
-        lines(densities[[j]], col = 2)
-
-        legend('topright', legend = c(paste('Group', labels[i]), paste('Group', labels[j])), col = 1:2, lwd = 1, bty = 'n')
-
-      }
-
-    }
-
-  }
-
-  par(mfrow=c(1,1))
-}
-
 
 permTest = function(data, B, threads, bw, npoints, k) {
 

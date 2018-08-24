@@ -46,7 +46,7 @@ plot(test)
 ```R
 pairs(test)
 ```
-![Alt text](tests/kTest2.jpg?raw=true "")
+[![Alt text](tests/kTest2.jpg?raw=true "")]
 
 
 

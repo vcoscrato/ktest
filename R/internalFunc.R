@@ -42,7 +42,7 @@ densitiesEval = function(data, bw = bw.nrd0(data[,1]), npoints = 512) {
 
   for(i in 1:length(l)) {
 
-    densities[[i]] = density(data[data[,2] == l[i],1], n = npoints, na.rm = TRUE, from = mini, to = maxi)
+    densities[[i]] = density(data[data[,2] == l[i],1], bw, n = npoints, na.rm = TRUE, from = mini, to = maxi)
 
   }
 
@@ -201,4 +201,41 @@ commonAreaReal = function(d, dfunc) {
   }
 
   return(auc(x, y, type = 'spline'))
+}
+
+
+#' @export
+
+plot.densities = function(output) {
+
+  ymax = 0
+
+  for(i in 1:length(output$labels)) {
+
+    if(max(output$densities[[i]]$y) > ymax) {
+
+      ymax = max(output$densities[[i]]$y)
+
+    }
+
+  }
+
+  xlabel = paste('Common area =', round(output$ca, 4))
+
+  if(!is.null(output$pvalue)) {
+
+    xlabel = paste(xlabel, '/ p-value =', round(output$pvalue, 4))
+
+  }
+
+  plot(output$densities[[1]], col = 1, main = 'Comparison of densities', xlab = xlabel, ylab = "Density", ylim = c(0, ymax))
+
+  for(i in 2:length(output$labels)) {
+
+    lines(output$densities[[i]], col = i)
+
+  }
+
+  legend('topright', output$labels, col = 1:length(output$labels), lwd = 2, bty = 'n')
+
 }

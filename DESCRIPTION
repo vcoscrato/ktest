@@ -1,5 +1,5 @@
 Package: ktest
-Version: 2.6
+Version: 2.7
 Type: Package
 Date: 2017-08-05
 Title: Estimated kernel densities comparisons

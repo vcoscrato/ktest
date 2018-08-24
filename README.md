@@ -41,11 +41,13 @@ print(test)
 #Table: Pairwise Common Area
 
 plot(test)
-![Alt text](tests/kTest1.jpg?raw=true "")
-
-pairs(test)
-![Alt text](tests/kTest2.jpg?raw=true "")
 ```
+![Alt text](tests/kTest1.jpg?raw=true "")
+```R
+pairs(test)
+```
+![Alt text](tests/kTest2.jpg?raw=true "")
+
 
 
 
@@ -68,8 +70,9 @@ print(test)
 #- p-value for H0 (Density is symmetric around median): 0.7698
 
 plot(test)
-![Alt text](tests/kSymmetryTest.jpg?raw=true "")
 ```
+![Alt text](tests/kSymmetryTest.jpg?raw=true "")
+
 
 ## The kGOFTest function
 Performs a hypothesis test for goodness-of-fit based on the estimated kernel densities.
@@ -101,5 +104,5 @@ print(test)
 #- p-value for H0 (Observed and theoric densities are equal): 0.2142
 
 plot(test)
-![Alt text](tests/kGOFTest.jpg?raw=true "")
 ```
+![Alt text](tests/kGOFTest.jpg?raw=true "")

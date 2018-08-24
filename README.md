@@ -42,11 +42,11 @@ print(test)
 
 plot(test)
 ```
-![Alt text](tests/kTest1.jpg?raw=true "")
+![Alt text](https://github.com/vcoscrato/ktest/blob/master/tests/ktest1.jpeg?raw=true "")
 ```R
 pairs(test)
 ```
-[![Alt text](tests/kTest2.jpg?raw=true "")]
+![Alt text](https://github.com/vcoscrato/ktest/blob/master/tests/ktest2.jpeg.jpeg?raw=true "")
 
 
 
@@ -71,7 +71,7 @@ print(test)
 
 plot(test)
 ```
-![Alt text](tests/kSymmetryTest.jpg?raw=true "")
+![Alt text](https://github.com/vcoscrato/ktest/blob/master/tests/kSymmetryTest.jpeg?raw=true "")
 
 
 ## The kGOFTest function
@@ -105,4 +105,4 @@ print(test)
 
 plot(test)
 ```
-![Alt text](tests/kGOFTest.jpg?raw=true "")
+![Alt text](https://github.com/vcoscrato/ktest/blob/master/tests/kGOFTest.jpeg?raw=true "")

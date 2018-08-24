@@ -17,14 +17,37 @@ Performs a hypothesis test for equality of distributions based on the estimated 
 ```R
 data = list(x = rnorm(30), y = rexp(50), z = rpois(70, 1))
 
-kTest(data)
+test = kTest(data)
 
-#$`commonArea`
-#[1] 0.4895715
+print(test)
 
-#$p.value
-#[1] 2e-04
+# 3 densities kTest results:
+#
+#- Common area between all densities: 0.4872
+#
+#- p-value for H0 (All densities are equal): 4e-04 
+#
+#
+#-------------------------------
+#          x      y        z    
+#-------- ---- -------- --------
+#   x      1    0.5392   0.5841 
+#
+#   y      NA     1      0.6674 
+#
+#   z      NA     NA       1    
+#-------------------------------
+#
+#Table: Pairwise Common Area
+
+plot(test)
+![Alt text](tests/kTest1.jpg?raw=true "")
+
+pairs(test)
+![Alt text](tests/kTest2.jpg?raw=true "")
 ```
+
+
 
 ## The kSimmetryTest function
 Performs a pdf simmetry test for given data based on the estimated kernel densities and the permutation test.
@@ -34,13 +57,18 @@ Performs a pdf simmetry test for given data based on the estimated kernel densit
 ```R
 x = rnorm(100)
 
-kSimmetryTest(x, around = 'median')
+x = rnorm(100)
+test = kSymmetryTest(x)
+print(test)
 
-#$`commonArea`
-#[1] 0.9450761
+# kSymmetryTest results: 
+#
+#- Common area between densities: 0.9191
+#
+#- p-value for H0 (Density is symmetric around median): 0.7698
 
-#$p.value
-#[1] 0.9232
+plot(test)
+![Alt text](tests/kSymmetryTest.jpg?raw=true "")
 ```
 
 ## The kGOFTest function
@@ -50,7 +78,7 @@ Performs a hypothesis test for goodness-of-fit based on the estimated kernel den
 
 ```R
 
-#When using no extra parameters on rfunc and dfunc:
+#Comparing with standard normal distribution:
 
 data = rnorm(100)
 
@@ -62,37 +90,16 @@ dfunc = function(x) {
   return(dnorm(x, 0, 1))
 }
 
-kGOFTest(data, rfunc, dfunc)
+test = kGOFTest(data, rfunc, dfunc)
 
-#$`commonArea`
-#[1] 0.9034465
+print(test)
 
-#$p.value
-#[1] 0.1684
+# kGOFTest results: 
+#
+#- Common area between densities: 0.9072
+#
+#- p-value for H0 (Observed and theoric densities are equal): 0.2142
 
-#When using parameters on rfunc and dfunc:
-
-data = rnorm(100)
-
-param1 = 0
-
-param2 = 1
-
-var_names = c(param1, param2)
-
-rfunc = function(n) {
-  return(rnorm(n, param1, param2))
-}
-
-dfunc = function(x) {
-  return(dnorm(x, param1, param2))
-}
-
-kGOFTest(data, rfunc, dfunc, param_names = c('param1', 'param2'))
-
-#$`commonArea`
-#[1] 0.9537704
-
-#$p.value
-#[1] 0.8874
+plot(test)
+![Alt text](tests/kGOFTest.jpg?raw=true "")
 ```
